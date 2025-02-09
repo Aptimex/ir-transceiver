@@ -3,6 +3,10 @@ My first custom PCB project.  A simple board for wiring an IR LED and receiver t
 
 ![](./schematic.png)
 
+![](./top.png)
+
+![](./bottom.png)
+
 If you're in the US you can get 3 copies of the board manufactured and shipped from OSHPark for less than $5 with their [2 Layer Prototype Service](https://docs.oshpark.com/services/two-layer/). 
 
 ## Bill of Materials
