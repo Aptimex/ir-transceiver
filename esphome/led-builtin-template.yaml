@@ -1,0 +1,25 @@
+# This file should be included in other files, NOT installed directly. 
+#packages:
+#  led-builtin: !include led-builtin-template.yaml
+
+# Simple package for operating the D1's builtin led light
+
+esphome:
+  name: led_builtin_placeholder
+  friendly_name: LED Builtin (Placeholder)
+  #Turn the LED on after everything else initializes
+  on_boot:
+    priority: -100
+    then:
+      - switch.turn_on: led_builtin
+
+esp8266:
+  board: d1_mini
+
+switch:
+  - platform: gpio
+    id: led_builtin
+    pin:
+      number: D4
+      mode: output
+    inverted: True #turns on when LOW

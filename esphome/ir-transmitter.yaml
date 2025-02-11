@@ -1,0 +1,77 @@
+# This file should be included in other files, NOT installed directly. 
+#packages:
+#  ir-transmitter: !include ir-transmitter.yaml
+
+# This package lets you define IR signals to send out 
+# Signals can be triggered via Home Assistant integrations
+
+packages:
+  led-builtin: !include led-builtin-template.yaml
+
+esphome:
+  name: ir_transmitter_placeholder
+  friendly_name: IR Transmiter (Placeholder)
+
+substitutions: # Basically constants
+  IR_TX: D5
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+  level: VERBOSE #defult: DEBUG
+
+#https://community.home-assistant.io/t/faking-an-ir-remote-control-using-esphome/369071
+remote_transmitter:
+  pin: $IR_TX
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: gpio
+    id: !extend led_builtin
+
+# https://esphome.io/components/remote_transmitter.html
+# Replace these examples with the codes you get from the receiver package
+button:
+  - platform: template
+    name: "Soundbar Up"
+    on_press:
+      - remote_transmitter.transmit_pioneer:
+          rc_code_1: 0x0041
+      - script.execute: blink_led
+  - platform: template
+    name: "Soundbar Down"
+    on_press:
+      - remote_transmitter.transmit_pioneer:
+          rc_code_1: 0x0045
+      - script.execute: blink_led
+  - platform: template
+    name: "Soundbar Mute"
+    on_press:
+      - remote_transmitter.transmit_pioneer:
+          rc_code_1: 0x0048
+      - script.execute: blink_led
+  - platform: template
+    name: "Soundbar Input"
+    on_press:
+      - remote_transmitter.transmit_pioneer:
+          rc_code_1: 0x0044
+      - script.execute: blink_led
+  - platform: template
+    name: "TCL TV Power"
+    on_press:
+      - remote_transmitter.transmit_raw:
+          carrier_frequency: 38kHz
+          code: [3975, -4024, 485, -1997, 484, -1996, 485, -1997, 484, -1997, 484, -1019, 486, -1019, 485, -1997, 485, -1020, 485, -1996, 486, -1020, 485, -1996, 486, -1019, 485, -1020, 485, -1019, 485, -1019, 485, -1020, 484, -1996, 486, -1995, 486, -1019, 485, -1996, 485, -1019, 485, -1997, 484, -1018, 486, -1995, 486, -8517, 3975, -4024, 485, -1996, 485, -1996, 485, -1997, 484, -1996, 485, -1019, 485, -1018, 486, -1995, 486, -1019, 485, -1996, 485, -1018, 486, -1995, 485, -1018, 486, -1018, 486, -1019, 485, -1018, 486, -1018, 486, -1995, 486, -1996, 485, -1018, 486, -1995, 486, -1018, 486, -1996, 485, -1019, 485, -1995, 486, -8517, 3974, -4023, 484, -1995, 485, -1995, 486, -1996, 485, -1995, 485, -1019, 485, -1018, 486, -1995, 486, -1019, 485, -1996, 485, -1020, 484, -1996, 485, -1019, 485, -1019, 485, -1018, 486, -1019, 485, -1019, 485, -1994, 486, -1996, 485, -1019, 485, -1995, 486, -1019, 485, -1996, 485, -1018, 486, -1995, 486]
+      - script.execute: blink_led
+
+script:
+  # Cause LED to blink regardless of current on/off state
+  - id: blink_led
+    mode: queued
+    then:
+      - switch.toggle: led_builtin
+      - delay: 100ms
+      - switch.toggle: led_builtin
+      - delay: 100ms

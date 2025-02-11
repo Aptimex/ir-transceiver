@@ -1,0 +1,33 @@
+# This file should be included in other files, NOT installed directly. 
+#packages:
+#  ir-receiver: !include ir-receiver.yaml
+
+# This package allows receiving and decoding IR remote signals (via logging)
+# Start viewing the logs, point your remote at the receiver, and push a button to capture the signal
+# If decoding into a known protocol isn't working, set 'dump: raw' instead
+
+
+esphome:
+  name: ir_receiver_placeholder
+  friendly_name: IR Receiver (Placeholder)
+
+substitutions: # Basically constants
+  IR_DATA: D6
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+  level: VERBOSE #defult: DEBUG
+
+#https://community.home-assistant.io/t/faking-an-ir-remote-control-using-esphome/369071
+remote_receiver:
+  pin:
+    number: $IR_DATA
+    inverted: true
+    mode:
+      input: true
+      pullup: true
+  dump: all
+  #dump: raw
