@@ -26,6 +26,16 @@ Header pins:
 - `R`: IR Receiver (any input pin on the D1 Mini)
 
 Components:
-- `R_LED`: current-limiting resistor for the LED (4.7 Ohm @ 5v ~= 1A)
+- `R_LED`: current-limiting resistor for the LED; 5v / 4.7Ohm = 1.06A (max with no Vf). But the LED forward voltage drop will keep it comfortably below the 1A maximum. 
 - `R_GATE`: gate resistor for the MOSFET, reduces stand-by power consumption (1k Ohm)
 - `JG`: Jumper for Gate. If you don't want to include a gate resistor, bridge this jumper with solder to bypass it. 
+
+## ESPHome
+Assuming the D1 is powered through the USB connection (providing 5V/1A), the PCB pins should be connected to the D1 like this: 
+- G to GND
+- 5 to 5V
+- 33 to 3V3
+- L to D5
+- IR to D6
+
+The files in the `esphome` directory provide an example of integrating this into Home Assistant via a D1 Mini board running ESPHome. Compile the `ir-remote.yaml` file (which imports the other files) and install it onto the D1. Home Assistant should recognize it after it boots and allow you to finalize integrating it for automation. 
